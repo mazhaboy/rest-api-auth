@@ -1,30 +1,32 @@
 package service
 
 import (
-	rest_api_auth "github.com/mazhaboy/rest-api-auth"
+	"github.com/mazhaboy/rest-api-auth/domain"
 	"github.com/mazhaboy/rest-api-auth/pkg/repository"
 )
 
-type Authorization interface {
-	CreateUser(user rest_api_auth.User) (id uint64, err error)
+type AuthorizationService interface {
+	CreateUser(user domain.User) (id uint64, err error)
+	GenerateToken(username, password string) (string, error)
+	ParseToken(token string) (uint64, error)
 }
 
-type ToDoList interface {
+type ToDoListService interface {
 }
 
-type ToDoItem interface {
+type ToDoItemService interface {
 }
 
 type Service struct {
-	Authorization
-	ToDoList
-	ToDoItem
+	AuthorizationService
+	ToDoListService
+	ToDoItemService
 }
 
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
-		Authorization: NewAuthService(repos.Authorization),
-		ToDoList:      nil,
-		ToDoItem:      nil,
+		AuthorizationService: NewAuthService(repos.AuthorizationRepo),
+		ToDoListService:      nil,
+		ToDoItemService:      nil,
 	}
 }

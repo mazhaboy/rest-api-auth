@@ -1,4 +1,4 @@
-package rest_api_auth
+package domain
 
 type ToDoList struct {
 	ID          uint64 `json:"id"`
